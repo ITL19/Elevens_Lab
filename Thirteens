@@ -54,8 +54,12 @@ public class Thirteens extends Board {
     @Override
     public boolean isLegal(List<Integer> selectedCards) {
         if (selectedCards.size() == 2) {
-            return containsPairSum11(selectedCards);
-        }//else if (selectedCards.size() == 3) {
+            return containsPairSum13(selectedCards);
+       
+        }else if (selectedCards.size() == 1){
+            return containsKing(selectedCards);
+        }
+        //else if (selectedCards.size() == 3) {
             //return containsJQK(selectedCards);
             //} 
             else 
@@ -73,7 +77,7 @@ public class Thirteens extends Board {
     @Override
     public boolean anotherPlayIsPossible() {
         ArrayList<Integer> cardCheck = (ArrayList<Integer>) cardIndexes();
-        return containsPairSum11(cardCheck); 
+        return containsPairSum13(cardCheck) || containsKing(cardCheck);
         //|| containsJQK(cardCheck);
     }
 
@@ -86,7 +90,7 @@ public class Thirteens extends Board {
      *              contain an 11-pair; false otherwise.
      */
     
-    private boolean containsPairSum11(List<Integer> selectedCards) {
+    private boolean containsPairSum13(List<Integer> selectedCards) {
         for (int n = 0; n < selectedCards.size(); n++) {
             for (int c = 0; c < selectedCards.size(); c++) {
                 if (cardAt(selectedCards.get(n)).pointValue() + cardAt(selectedCards.get(c)).pointValue() == 13)
@@ -95,6 +99,15 @@ public class Thirteens extends Board {
         }
         
         return false;
+    }
+    private boolean containsKing(List<Integer> selectedCards){
+        boolean findKing = false;
+        for (int cardIndex : selectedCards){
+            if (cardAt(cardIndex).rank().equals("king")){
+                findKing = true;
+            }
+        }
+        return findKing;
     }
     /**
      * Check for a JQK in the selected cards.
